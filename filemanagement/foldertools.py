@@ -10,6 +10,8 @@ import re
 import time
 import shutil
 
+#global virant to store missed folders
+missedlist = ['Missed files or folders']
 # To compare two files based on attributes, name, modification date
 def filecompare(path1, path2):
     print "filecompare"
@@ -49,9 +51,28 @@ def findfile(filename,folder):
             return 0
     return 1
 
+# To compare source folder with destination folder, and add files which are not in destination folder in to list.
+def foldercompare(source, destination):
+    print "folder compare"
+    global missedlist
+    if not os.path.isdir(source):
+        print "error: source path is not a valid path"
+        return -1
+    if not os.path.exists(destination):
+        print "error: destination is not a valid path or exsited"
+        missedlist.append(source)
+    else:
+        for obj in os.listdir(source):
+            if os.path.isfile(source + os.sep + obj):
+                if findfile(obj,destination) != 0:
+                    missedlist.append(source + os.sep + obj + '\n')
+            else:
+                foldercompare(source + os.sep + obj, destination + os.sep + obj)
+    print missedlist
+
 if __name__ == '__main__':
 
     source = "/home/steven/dataexample/folder1"
-    destination = "/home/steven/dataexample/folder25"
-    foldersync(source,destination)
-
+    destination = "/home/steven/dataexample/folder4"
+    foldercompare(source,destination)
+    foldercompare(source, destination)
