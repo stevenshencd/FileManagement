@@ -13,6 +13,7 @@ import shutil
 #global virant to store missed folders
 missedlist = ['Missed files or folders']
 # To compare two files based on attributes, name, modification date
+
 def filecompare(path1, path2):
     print "filecompare"
     if os.path.samefile(path1, path2):
@@ -20,14 +21,10 @@ def filecompare(path1, path2):
     else:
         print "different"
 
-def backup(source, destination):
-    print "backup"
-
-def sync(source, destination):
-    print "sync"
 
 def dedupe(source):
     print "dedupe"
+
 
 def foldersync(source, destination):
     print "folder syn"
