@@ -25,6 +25,7 @@ from Tkinter import *
 import filemanagement.foldertools
 
 def btnSyncClicked():
+    return
     source = sourcePath.get()
     destination = destinationPath.get()
     if not os.path.isdir(source):
@@ -33,8 +34,8 @@ def btnSyncClicked():
     print source + ":" + destination
     filemanagement.foldertools.foldersync(source, destination)
 
-def btnCompareClicked():
-    print "Del click"
+def btnConfigClicked():
+    print "Config"
 
 def btnDedupeClicked():
     print "dedupe"
@@ -45,11 +46,7 @@ def btnBrowseSourceClicked():
     sourcePath.delete(0, END)
     sourcePath.insert(0, path)
 
-def btnBrowseDestinationClicked():
-    path = tkFileDialog.askdirectory(initialdir=os.getcwd())
-    print path
-    destinationPath.delete(0, END)
-    destinationPath.insert(0, path)
+
 '''
 all config are in sysconfig in dict format, it is composed of 3 parts or more parts
 defaultsource:...
@@ -88,12 +85,10 @@ root = Tk()
 root.title("File Management Tool")
 btnSync = Button(root, text = "Sync", relief = GROOVE, command = btnSyncClicked)
 btnSync.grid(row = 0, column = 0, sticky = W + E)
-btnCompare = Button(root, text = "Compare", relief = GROOVE, command = btnCompareClicked)
-btnCompare.grid(row = 0, column = 1, sticky = W + E)
 btnDedupe = Button(root, text = "Dedupe", relief = GROOVE, command = btnDedupeClicked)
-btnDedupe.grid(row = 0, column = 2, sticky = W + E)
-#btnClean = Button(root, text = "Clean", relief = GROOVE, command = btnCleanClicked)
-#btnClean.grid(row = 0, column = 0, sticky = W + E)
+btnDedupe.grid(row = 0, column = 1, sticky = W + E)
+btnConfig = Button(root, text = "Config", relief = GROOVE, command = btnConfigClicked)
+btnConfig.grid(row = 0, column = 2, sticky = W + E)
 lblSource = Label(root, text = "Source:", relief = FLAT)
 lblSource.grid (row = 1, column = 0, sticky = W)
 sourcePath = Entry(root, relief = GROOVE)
@@ -101,17 +96,9 @@ sourcePath.grid(row = 1, column = 1, columnspan = 2, sticky = W + E)
 btnBrowseSource = Button(root, text = "Browse", relief = GROOVE, command = btnBrowseSourceClicked)
 btnBrowseSource.grid(row = 1, column = 3, sticky = W + E)
 
-lblDestination = Label(root, text = "Destination:", relief = FLAT)
-lblDestination.grid (row = 1, column = 4, sticky = W)
-destinationPath = Entry(root, relief = GROOVE)
-destinationPath.grid(row = 1, column = 5, columnspan = 2, sticky = W + E)
-btnBrowseDestination = Button(root, text = "Browse", relief = GROOVE, command = btnBrowseDestinationClicked)
-btnBrowseDestination.grid(row = 1, column = 7, sticky = W + E)
+txtResult = Text(root, relief = GROOVE)
+txtResult.grid(row = 2, column = 0, columnspan = 4, sticky = W + E + N + S)
 
-txtContentSource = Text(root, relief = GROOVE)
-txtContentSource.grid(row = 2, column = 0, columnspan = 4, sticky = W + E + N + S)
-txtContentDestination = Text(root, relief = GROOVE)
-txtContentDestination.grid(row = 2, column = 4, columnspan = 4, sticky = W + E + N + S)
 root.mainloop()
 
 #This procedure is for launch app gui, initialize parameter
