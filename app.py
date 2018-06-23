@@ -19,9 +19,10 @@ import re
 import time
 import shutil
 from filemanagement import foldertools
-import filemanagement.foldertools
-from Tkinter import *
+import json
 import tkFileDialog
+from Tkinter import *
+import filemanagement.foldertools
 
 def btnSyncClicked():
     source = sourcePath.get()
@@ -49,6 +50,38 @@ def btnBrowseDestinationClicked():
     print path
     destinationPath.delete(0, END)
     destinationPath.insert(0, path)
+'''
+all config are in sysconfig in dict format, it is composed of 3 parts or more parts
+defaultsource:...
+defaultdsnt:...
+syncmap:{source1:dsnt1,source2:dsnt2...}
+'''
+def dstnmapping(source):
+    fin = open("Config/sysconfig", "r")
+    dict = json.load(fin)
+    fin.close()
+    mapping = dict['syncmap']
+    try:
+        return mapping[source]
+    except:
+        return "no found"
+
+def updatedsntmapping(source, dstn):
+    d = {}
+    with open("Config/sysconfig", "r") as fin:
+        d = json.load(fin)
+    mapping = d['syncmap']
+    mapping[source] = dstn
+
+    with open("Config/sysconfig", "w") as fout:
+        json.dump(d,fout)
+
+def init():
+    # to check sysconfig file, existed, content
+    dict = {'defaultsource': '', 'defaultdsnt': '', 'syncmap': {}}
+    if not os.path.exists("Config/sysconfig"):
+        with open("Config/sysconfig", "w") as f:
+            json.dump(dict, f)
 
 # Define GUI appearance
 root = Tk()
@@ -80,7 +113,9 @@ txtContentSource.grid(row = 2, column = 0, columnspan = 4, sticky = W + E + N + 
 txtContentDestination = Text(root, relief = GROOVE)
 txtContentDestination.grid(row = 2, column = 4, columnspan = 4, sticky = W + E + N + S)
 root.mainloop()
+
 #This procedure is for launch app gui, initialize parameter
+
 def main():
     print "main"
     #defaulpath = os.getcwd()
@@ -97,6 +132,22 @@ if __name__ == '__main__':
 
     source = "/home/steven/dataexample/folder1"
     destination = "/home/steven/dataexample/folder4"
-    main()
+    #main()
     #filemanagement.foldertools.foldercompare(source, destination)
+    init()
+    updatedsntmapping("s1", "d1")
+    updatedsntmapping("s2", "d2")
+    dstnmapping("s1")
+    print dstnmapping("s3")
+    updatedsntmapping("s3", "d3")
+    '''
+    dict ={}
+    with open("Config/sys", "r") as fin:
+        try:
+            dict = json.load(fin)
+        except Exception as err:
+            print "error happened"
 
+        finally:
+            print dict
+    print dict '''
