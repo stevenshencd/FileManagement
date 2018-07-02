@@ -3,12 +3,10 @@
 
 import tkFileDialog
 from Tkinter import *
-import Tkinter as tk
 
 
-class settingDialog(tk, Toplevel):
-    def __init__(self, self):
-        #super().__init__()
+class settingDialog():
+    def __init__(self):
         self.title = "Automatic Backup Configuration"
         self.setupUI()
 
@@ -41,6 +39,6 @@ class settingDialog(tk, Toplevel):
 
 if __name__ == '__main__':
     print "debug\n"
-    box = settingDialog ()
+    box = settingDialog()
     box.mainloop()
 
